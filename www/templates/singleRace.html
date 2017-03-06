@@ -1,0 +1,40 @@
+<ion-view view-title="{{race.name}}">
+    <ion-content>
+
+        <div class="card">
+
+            <div class="item">
+                <h2>{{race.name}}</h2>
+                <p>{{race.description}}</p>
+                <p>{{race.status}}</p>
+                <p>{{race.starttime | date:'dd-MM-yyyy HH:MM'}}</p>
+            </div>
+
+        </div>
+
+        <div class="card">
+            <div class="item">
+                <h2>Pubs ({{race.pubs.length}})</h2>
+                <a href="" class="item" ng-repeat="pub in race.pubs">
+                    <h2>{{pub.name}}</h2>
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="item">
+                <h2>Teams ({{race.teams.length}})</h2>
+
+                <a href="" class="item" ng-repeat="team in race.teams">
+                    <h2>{{team.name}}</h2>
+                    <p>Luuk</p>
+                    <p>Hans</p>
+                    <p>Peter</p>
+                </a>
+            </div>
+        </div>
+
+
+
+    </ion-content>
+</ion-view>

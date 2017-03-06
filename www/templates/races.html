@@ -1,0 +1,32 @@
+<ion-view view-title="Races">
+  <ion-content>
+    <ion-list>
+
+
+
+      <a ng-repeat="race in races" class="item card" href="#/app/races/{{race._id}}">
+
+        <div class="item">
+          <h2>{{race.name}}</h2>
+          <p>{{race.statusDesc}}</p>
+        </div>
+        <div class="item">
+
+          <h2>Pubs ({{race.pubs.length}})</h2>
+          <p ng-repeat="pub in race.pubs">{{pub.name}}<p>
+
+          <br>
+
+          <h2>Teams ({{race.teams.length}})</h2>
+          <p ng-repeat="team in race.teams">{{team.name}}<p>
+
+        </div>
+
+
+
+
+
+      </a>
+    </ion-list>
+  </ion-content>
+</ion-view>
