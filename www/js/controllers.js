@@ -56,3 +56,17 @@ angular.module('starter.controllers', [])
         $scope.race = RaceFactory.getSingle(raceId);
     })
 
+    .controller('NewRaceController', function($scope, RaceFactory) {
+        $scope.race = RaceFactory.newRace;
+        $scope.addTeamName = function () {
+            RaceFactory.addNewTeam();
+        }
+        $scope.deleteTeam = function (name) {
+            RaceFactory.deleteNewTeam(name)
+        }
+        $scope.saveRace = function () {
+            console.log("saving race")
+            RaceFactory.saveNewRace();
+        }
+    })
+

@@ -52,6 +52,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
                 }
             })
 
+            .state('app.newrace', {
+                url: '/races/newrace',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/newRace.html',
+                        controller: 'NewRaceController'
+                    }
+                }
+            })
+
             .state('app.singlerace', {
                 url: '/races/:raceId',
                 views: {
@@ -61,6 +71,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
                     }
                 }
             })
+
+
 
 
 

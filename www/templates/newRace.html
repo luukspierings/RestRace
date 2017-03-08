@@ -1,0 +1,56 @@
+<ion-view view-title="Nieuwe race">
+    <ion-content>
+        <div class="card">
+
+
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Naam*</span>
+                <input ng-model="race.name" type="text" placeholder="Mijn race">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Beschrijving</span>
+                <input ng-model="race.description" type="text" placeholder="Hier hoort een beschrijving staan">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Start datum*</span>
+                <input type="datetime">
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Kroegen</span>
+                <input type="text" placeholder="Zoek hier naar een kroeg">
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </label>
+
+            <div class="item item-input item-stacked-label">
+                <span class="input-label">Teams</span>
+                <div class="item-input-inset">
+                    <input ng-model="race.newTeamName" type="text" placeholder="Teamnaam">
+                    <button ng-click="addTeamName()" class="button button-small icon-left ion-plus button-outline button-energized">
+                        Nieuw team
+                    </button>
+                </div>
+                <div class="list">
+                    <div ng-repeat="team in race.teams" class="item item-icon-right">
+                        <h2>{{team}}</h2>
+                        <button ng-click="deleteTeam(team)" class="button button-icon icon ion-close assertive"></button>
+                    </div>
+                </div>
+            </div>
+
+            <button ng-click="saveRace()" class="item button button-full button-energized">Opslaan!</button>
+
+
+        </div>
+
+
+
+    </ion-content>
+</ion-view>

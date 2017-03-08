@@ -6,7 +6,7 @@
             <div class="item">
                 <h2>{{race.name}}</h2>
                 <p>{{race.description}}</p>
-                <p>{{race.status}}</p>
+                <p>{{race.statusDesc}}</p>
                 <p>{{race.starttime | date:'dd-MM-yyyy HH:MM'}}</p>
             </div>
 
@@ -14,7 +14,7 @@
 
         <div class="card">
             <div class="item">
-                <h2>Pubs ({{race.pubs.length}})</h2>
+                <h2>Kroegen ({{race.pubs.length}})</h2>
                 <a href="" class="item" ng-repeat="pub in race.pubs">
                     <h2>{{pub.name}}</h2>
                 </a>
@@ -27,9 +27,7 @@
 
                 <a href="" class="item" ng-repeat="team in race.teams">
                     <h2>{{team.name}}</h2>
-                    <p>Luuk</p>
-                    <p>Hans</p>
-                    <p>Peter</p>
+                    <p ng-repeat="user in team.users">{{user.firstname}} {{user.lastname}}</p>
                 </a>
             </div>
         </div>

@@ -3,23 +3,26 @@ angular.module('starter.services', [])
 
     .factory('RaceFactory', function($http) {
 
-        var baseUrl = "http://192.168.1.237:3000/api/races";
-        var secondUrl = "";
         var races = [];
-
+        var newRace = {
+            name:"",
+            description:"",
+            newTeamName:"",
+            starttime:null,
+            teams: []
+        };
 
         return {
             races: getRaces(),
+            newRace: newRace,
             getAll: function () {
                 races.$promise = $http({
                     method: 'GET',
-                    url: baseUrl,
+                    url: "http://localhost:3000/api/races",
                 }).then(
                     function(response){
                         angular.copy(response.data, races);
                         console.log(races);
-
-
 
 
                         return getRaces();
@@ -33,7 +36,27 @@ angular.module('starter.services', [])
                         return races[i];
                     }
                 }
-            }
+            },
+            addNewTeam: function () {
+                if (newRace.newTeamName && newRace.teams.indexOf(newRace.newTeamName) == -1) {
+                    newRace.teams.push(newRace.newTeamName);
+                    newRace.newTeamName = "";
+                }
+            },
+            deleteNewTeam: function (name) {
+                if(newRace.teams.indexOf(name) !== -1){
+                    newRace.teams.splice(newRace.teams.indexOf(name), 1);
+                }
+
+            },
+            saveNewRace: function () {
+                newRace.starttime = new Date()
+                $http.post("http://192.168.1.237:3000/api/races", newRace).then(
+                    function(response){
+                        console.log(response.data);
+                    }
+                )
+            },
         }
 
 

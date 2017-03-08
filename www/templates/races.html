@@ -1,4 +1,8 @@
-<ion-view view-title="Races">
+<ion-view view-title="Races" >
+  <ion-nav-buttons side="right">
+    <a class="button button-icon icon ion-plus-circled" href="#/app/races/newrace">
+    </a>
+  </ion-nav-buttons>
   <ion-content>
     <ion-list>
 
@@ -12,7 +16,7 @@
         </div>
         <div class="item">
 
-          <h2>Pubs ({{race.pubs.length}})</h2>
+          <h2>Kroegen ({{race.pubs.length}})</h2>
           <p ng-repeat="pub in race.pubs">{{pub.name}}<p>
 
           <br>
