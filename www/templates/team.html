@@ -1,0 +1,66 @@
+<ion-view>
+    <ion-nav-title>
+        Team {{team.name}}
+    </ion-nav-title>
+    <ion-content>
+
+        <div class="card">
+
+            <div class="item">
+                <h2>{{team.name}}</h2>
+
+            </div>
+
+        </div>
+
+        <div class="card">
+            <div class="item">
+                <h2 style="margin-bottom: 10px">Personen ({{team.users.length}})</h2>
+                <div class="list">
+
+                    <div ng-repeat="user in team.users" class="item item-icon-right">
+                        <h2>{{user.firstname}} {{user.lastname}}</h2>
+                        <button ng-click="removeUser(user._id)" class="button button-icon icon ion-close assertive"></button>
+                    </div>
+                    <!---->
+                    <!--<a class="item" ng-click="removeUser(user._id)" ng-repeat="user in team.users">{{user.firstname}} {{user.lastname}}</a>-->
+                    <!--<button ng-click="removeUser(user._id)" ng-repeat="user in team.users" class="button button-icon icon ion-close assertive"></button>-->
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="item">
+                <span class="input-label">Personen toevoegen</span>
+                <label class="item-input">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input ng-model="formdata.searchText" ng-change="searchUser()" type="text" placeholder="Zoek naar personen">
+                </label>
+                <div class="list">
+
+                    <div ng-repeat="user in searchUsers" class="item item-icon-right">
+                        <h2>{{user.firstname}} {{user.lastname}}</h2>
+                        <button ng-click="addUser(user._id)" class="button button-icon icon ion-plus balanced"></button>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+
+        <div class="card">
+            <button ng-click="" style="margin-top: 0" class="item button button-full button-assertive">Verwijder dit team</button>
+        </div>
+
+
+
+
+
+    </ion-content>
+</ion-view>

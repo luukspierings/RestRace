@@ -51,12 +51,30 @@ angular.module('starter.services', [])
             },
             saveNewRace: function () {
                 newRace.starttime = new Date()
-                $http.post("http://192.168.1.237:3000/api/races", newRace).then(
+                $http.post("http://localhost:3000/api/races", newRace).then(
                     function(response){
                         console.log(response.data);
+                        response.data.status = "notstarted";
+                        races.push(response.data);
+                        getRaces();
                     }
                 )
             },
+            deleteRace: function (_id) {
+                $http.delete("http://localhost:3000/api/races/"+_id).then(
+                    function(response){
+                        console.log(response.data);
+
+                        var result = races.filter(function( obj ) {
+                            return obj._id == _id;
+                        });
+
+                        if(races.indexOf(result[0]) !== -1){
+                            races.splice(newRace.teams.indexOf(result[0]), 1);
+                        }
+                    }
+                )
+            }
         }
 
 
@@ -121,3 +139,97 @@ angular.module('starter.services', [])
 
 
 
+    .factory('TeamFactory', function($http) {
+
+        var team = {
+            name: ""
+        };
+
+        return {
+            team: team,
+            getSingle: function ($teamId) {
+                team.$promise = $http({
+                    method: 'GET',
+                    url: "http://localhost:3000/api/teams/"+$teamId,
+                }).then(
+                    function(response){
+                        angular.copy(response.data[0], team);
+                        console.log(team);
+
+                        return team;
+                    }
+                )
+            },
+            deleteTeam: function ($teamId) {
+
+            },
+            addUser: function ($teamId, $userId) {
+
+                $http.post("http://localhost:3000/api/teams/"+$teamId+"/adduser", {userId: $userId}).then(
+                    function(response){
+                        console.log(response.data);
+                        angular.copy(response.data.users, team.users);
+                        console.log(team.users);
+                    }
+                )
+
+
+            },
+            removeUser: function ($teamId, $userId) {
+
+                $http.post("http://localhost:3000/api/teams/"+$teamId+"/removeuser", {userId: $userId}).then(
+                    function(response){
+                        console.log(response.data);
+                        angular.copy(response.data.users, team.users);
+                        console.log(team.users);
+                    }
+                )
+
+
+            }
+
+        }
+    })
+
+    .factory('UserFactory', function($http) {
+
+
+
+        var formdata = {
+            searchText: ""
+        }
+
+
+
+        var searchUsers = [
+
+        ]
+
+        return {
+            searchUsers: searchUsers,
+            formdata: formdata,
+            search: function (userFilter) {
+
+                $http.get("http://localhost:3000/api/users/search/"+formdata.searchText).then(
+                    function(response){
+                        console.log(response.data);
+
+                        var userIds = [];
+                        userFilter.forEach(function (item, index) {
+                            userIds.push(item._id);
+                        })
+
+                        console.log(userIds);
+                        var result = response.data.filter(function( obj ) {
+                            return (userIds.indexOf(obj._id) == -1);
+                        });
+
+                        console.log(result);
+
+                        angular.copy(result, searchUsers);
+                    }
+                )
+
+            }
+        }
+    })

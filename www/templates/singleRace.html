@@ -23,14 +23,20 @@
 
         <div class="card">
             <div class="item">
-                <h2>Teams ({{race.teams.length}})</h2>
+                <h2 style="margin-bottom: 10px">Teams ({{race.teams.length}})</h2>
 
-                <a href="" class="item" ng-repeat="team in race.teams">
+                <a href="#/app/team/{{team._id}}" class="item" ng-repeat="team in race.teams">
                     <h2>{{team.name}}</h2>
                     <p ng-repeat="user in team.users">{{user.firstname}} {{user.lastname}}</p>
                 </a>
             </div>
         </div>
+
+        <div class="card">
+            <button ng-click="deleteRace()" style="margin-top: 0" class="item button button-full button-assertive">Verwijder deze race</button>
+        </div>
+
+
 
 
 
