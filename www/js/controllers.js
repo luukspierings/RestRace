@@ -58,6 +58,11 @@ angular.module('starter.controllers', [])
             RaceFactory.deleteRace(raceId)
             $ionicHistory.goBack();
         }
+        $scope.$on('refresh', function(event, args) {
+            console.log("refreshed");
+            RaceFactory.getSingle(raceId);
+        })
+
     })
 
     .controller('NewRaceController', function($scope, RaceFactory, $ionicHistory) {
@@ -75,7 +80,7 @@ angular.module('starter.controllers', [])
         }
     })
 
-    .controller("TeamDetailController", function($stateParams, $scope, TeamFactory, $ionicHistory, UserFactory){
+    .controller("TeamDetailController", function($stateParams, $scope, TeamFactory, $ionicHistory, UserFactory, $rootScope){
         var teamId = $stateParams.teamId;
         $scope.team = TeamFactory.team;
         $scope.searchUsers = UserFactory.searchUsers;
@@ -86,12 +91,31 @@ angular.module('starter.controllers', [])
             $ionicHistory.goBack();
         }
         $scope.searchUser = function(){
-            UserFactory.search(TeamFactory.team.users);
+            if(UserFactory.formdata.searchText){
+                UserFactory.search(TeamFactory.team.users);
+            }
+            else{
+                UserFactory.searchUsers.length = 0;
+            }
         }
         $scope.addUser = function($userId){
             TeamFactory.addUser($stateParams.teamId, $userId);
+
+            var result = UserFactory.searchUsers.filter(function( obj ) {
+                return obj._id == $userId;
+            });
+
+            if(UserFactory.searchUsers.indexOf(result[0]) !== -1){
+                UserFactory.searchUsers.splice(UserFactory.searchUsers.indexOf(result[0]), 1);
+            }
+
         }
         $scope.removeUser = function($userId){
             TeamFactory.removeUser($stateParams.teamId, $userId);
+        }
+        $scope.deleteTeam = function(){
+            TeamFactory.deleteTeam();
+            $ionicHistory.goBack();
+            $rootScope.$broadcast('refresh');
         }
     })

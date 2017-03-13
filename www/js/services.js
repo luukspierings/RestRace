@@ -160,8 +160,13 @@ angular.module('starter.services', [])
                     }
                 )
             },
-            deleteTeam: function ($teamId) {
+            deleteTeam: function () {
+                $http.delete("http://localhost:3000/api/teams/"+team._id).then(
+                    function(response){
+                        console.log(response.data);
 
+                    }
+                )
             },
             addUser: function ($teamId, $userId) {
 
@@ -172,7 +177,6 @@ angular.module('starter.services', [])
                         console.log(team.users);
                     }
                 )
-
 
             },
             removeUser: function ($teamId, $userId) {
@@ -185,7 +189,6 @@ angular.module('starter.services', [])
                     }
                 )
 
-
             }
 
         }
@@ -193,13 +196,9 @@ angular.module('starter.services', [])
 
     .factory('UserFactory', function($http) {
 
-
-
         var formdata = {
             searchText: ""
         }
-
-
 
         var searchUsers = [
 
@@ -210,7 +209,7 @@ angular.module('starter.services', [])
             formdata: formdata,
             search: function (userFilter) {
 
-                $http.get("http://localhost:3000/api/users/search/"+formdata.searchText).then(
+                searchUsers.$promise = $http.get("http://localhost:3000/api/users/search/"+formdata.searchText).then(
                     function(response){
                         console.log(response.data);
 
@@ -227,6 +226,8 @@ angular.module('starter.services', [])
                         console.log(result);
 
                         angular.copy(result, searchUsers);
+
+                        return searchUsers;
                     }
                 )
 
