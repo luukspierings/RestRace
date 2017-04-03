@@ -14,9 +14,10 @@
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="SplashScreenDelay" value="2000"/>
   <preference name="FadeSplashScreenDuration" value="2000"/>
-  <preference name="android-minSdkVersion" value="16"/>
+  <preference name="android-minSdkVersion" value="23"/>
   <preference name="BackupWebStorage" value="none"/>
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
+  <allow-navigation href="http://192.168.1.237:8100"/>
 </widget>

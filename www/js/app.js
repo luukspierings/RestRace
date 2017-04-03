@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova'])
 
     .run(function($ionicPlatform) {
         $ionicPlatform.ready(function() {
@@ -25,11 +25,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     .config(function($stateProvider, $urlRouterProvider) {
         $stateProvider
 
+            .state('app.login', {
+                url: '/login',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/login.html',
+                        controller: 'LoginController'
+                    }
+                }
+            })
+
             .state('app', {
                 url: '/app',
                 abstract: true,
                 templateUrl: 'templates/menu.html',
-                controller: 'AppCtrl'
+                controller: 'AppController'
             })
 
             .state('app.home', {
@@ -38,6 +48,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
                     'menuContent': {
                         templateUrl: 'templates/home.html',
                         controller: 'HomeController'
+                    }
+                }
+            })
+            .state('app.activerace', {
+                cache: false,
+                url: '/activerace/:raceId',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/activeRace.html',
+                        controller: 'ActiveRaceController'
+                    }
+                }
+            })
+            .state('app.participaterace', {
+                cache: false,
+                url: '/activerace/:raceId/participate',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/participateRace.html',
+                        controller: 'ParticipateRaceController'
                     }
                 }
             })
@@ -63,6 +93,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
             })
 
             .state('app.singlerace', {
+                cache: false,
                 url: '/races/:raceId',
                 views: {
                     'menuContent': {
@@ -73,11 +104,22 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
             })
 
             .state('app.team', {
+                cache: false,
                 url: '/team/:teamId',
                 views: {
                     'menuContent': {
                         templateUrl: 'templates/team.html',
                         controller: 'TeamDetailController'
+                    }
+                }
+            })
+
+            .state('app.pub', {
+                url: '/pub/:pubId',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/pub.html',
+                        controller: 'PubDetailController'
                     }
                 }
             })

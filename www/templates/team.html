@@ -23,7 +23,7 @@
                 <div class="list">
 
                     <div ng-repeat="user in searchUsers" class="item item-icon-right">
-                        <h2>{{user.firstname}} {{user.lastname}}</h2>
+                        <h2>{{user.local.username}}</h2>
                         <button ng-click="addUser(user._id)" class="button button-icon icon ion-plus balanced"></button>
                     </div>
                 </div>
@@ -36,12 +36,9 @@
                 <div class="list">
 
                     <div ng-repeat="user in team.users" class="item item-icon-right">
-                        <h2>{{user.firstname}} {{user.lastname}}</h2>
+                        <h2>{{user.local.username}}</h2>
                         <button ng-click="removeUser(user._id)" class="button button-icon icon ion-close assertive"></button>
                     </div>
-                    <!---->
-                    <!--<a class="item" ng-click="removeUser(user._id)" ng-repeat="user in team.users">{{user.firstname}} {{user.lastname}}</a>-->
-                    <!--<button ng-click="removeUser(user._id)" ng-repeat="user in team.users" class="button button-icon icon ion-close assertive"></button>-->
                 </div>
 
             </div>

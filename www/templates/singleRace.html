@@ -1,4 +1,4 @@
-<ion-view view-title="{{race.name}}">
+<ion-view view-title="Race details">
     <ion-content>
 
         <div class="card">
@@ -14,8 +14,8 @@
 
         <div class="card">
             <div class="item">
-                <h2>Kroegen ({{race.pubs.length}})</h2>
-                <a href="" class="item" ng-repeat="pub in race.pubs">
+                <h2 style="margin-bottom: 10px">Kroegen ({{race.pubs.length}})</h2>
+                <a href="#/app/pub/{{pub._id}}" class="item" ng-repeat="pub in race.pubs">
                     <h2>{{pub.name}}</h2>
                 </a>
             </div>
@@ -27,9 +27,18 @@
 
                 <a href="#/app/team/{{team._id}}" class="item" ng-repeat="team in race.teams">
                     <h2>{{team.name}}</h2>
-                    <p ng-repeat="user in team.users">{{user.firstname}} {{user.lastname}}</p>
+                    <p ng-repeat="user in team.users">{{user.local.username}}</p>
                 </a>
             </div>
+            <div class="item item-input item-stacked-label">
+                <div class="item item-input-inset">
+                    <input ng-model="race.newTeamName" type="text" placeholder="Teamnaam">
+                    <button ng-click="addTeam()" class="button button-small icon-left ion-plus button-outline button-energized">
+                        Nieuw team
+                    </button>
+                </div>
+            </div>
+
         </div>
 
         <div class="card">

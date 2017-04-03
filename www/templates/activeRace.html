@@ -1,0 +1,43 @@
+<ion-view view-title="Actieve race">
+    <ion-content>
+
+        <div class="card">
+
+            <div class="item">
+                <h2>{{race.name}}</h2>
+                <p>{{race.description}}</p>
+                <p>{{race.statusDesc}}</p>
+                <p>{{race.starttime | date:'dd-MM-yyyy HH:MM'}}</p>
+            </div>
+            <a href="#/app/activerace/{{race._id}}/participate" style="margin-top: 0" class="item button button-full button-balanced">Ik doe mee!</a>
+        </div>
+
+        <div class="card">
+            <div class="item">
+                <h2 style="margin-bottom: 10px">Alle kroegen ({{race.pubs.length}})</h2>
+                <a href="#/app/pub/{{pub._id}}" class="item" ng-repeat="pub in race.pubs">
+                    <h2>{{pub.name}}</h2>
+                </a>
+            </div>
+        </div>
+
+        <div ng-repeat="team in race.teams" class="card">
+            <div class="item">
+                <h2>{{team.name}}</h2>
+            </div>
+            <div class="item">
+            <h2>Score: {{team.ranking.length}}</h2>
+            </div>
+            <div class="item">
+                    <h2 style="margin-bottom: 10px">Personen ({{team.users.length}})</h2>
+                    <p ng-repeat="user in team.users">{{user.local.username}}</p>
+            </div>
+        </div>
+
+
+
+
+
+
+    </ion-content>
+</ion-view>

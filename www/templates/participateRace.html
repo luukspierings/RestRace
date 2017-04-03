@@ -1,0 +1,43 @@
+<ion-view view-title="Deelnemen aan race">
+    <ion-content>
+
+        <div class="card">
+            <div class="item">
+                <h2 style="margin-bottom: 10px">Kaart met alle kroegen</h2>
+                <img style="width: 100%;" ng-src="{{participatingTeam.rankingMap}}"  ng-show="participatingTeam.rankingMap"/>
+            </div>
+            <button style="margin-top: 0" ng-click="checkLocation()" class="item button button-full button-balanced">Check op mijn locatie!</button>
+        </div>
+
+
+        <div class="card">
+            <div class="item">
+                <h2 style="margin-bottom: 10px">Kroegen gepasseerd ({{participatingTeam.ranking.length}})</h2>
+
+                <div class="item" ng-repeat="rank in participatingTeam.ranking">
+                    <h2>{{rank.time | date:'HH:MM'}} - {{rank.pub.name}}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+
+            <div class="item">
+
+                <h2>Tussenstand</h2>
+
+                <!--Coords for testing:-->
+                <!--<h2>{{position.lat}}</h2>-->
+                <!--<h2>{{position.lon}}</h2>-->
+
+                <div class="list">
+                    <div ng-repeat="team in race.teams | orderBy:'-ranking.length'" class="item item-icon-right">
+                        <h2>{{team.name}}<span style="margin-left: 30px">Score: {{team.ranking.length}}   </span></h2>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </ion-content>
+</ion-view>

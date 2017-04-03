@@ -1,72 +1,160 @@
 angular.module('starter.controllers', [])
 
-    .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
-        // With the new view caching in Ionic, Controllers are only called
-        // when they are recreated or on app start, instead of every page change.
-        // To listen for when this page is active (for example, to refresh data),
-        // listen for the $ionicView.enter event:
-        //$scope.$on('$ionicView.enter', function(e) {
-        //});
 
-        // Form data for the login modal
-        $scope.loginData = {};
 
-        // Create the login modal that we will use later
-        $ionicModal.fromTemplateUrl('templates/login.html', {
-            scope: $scope
-        }).then(function(modal) {
-            $scope.modal = modal;
+    .controller('AppController', function($state, $ionicHistory, $rootScope, $ionicSideMenuDelegate, $scope, $ionicNavBarDelegate) {
+
+        $scope.$root.showMenuIcon = true;
+
+        $rootScope.$on('$stateChangeStart', function (event, next, nextParams, fromState) {
+            if (!localStorage.getItem('userToken')) {
+                if (!next || next.name !== 'app.login') {
+                    console.log('must login!');
+                    event.preventDefault();
+                    $state.go('app.login');
+                    $ionicSideMenuDelegate.canDragContent(false);
+                    $scope.$root.showMenuIcon = false;
+                    $ionicNavBarDelegate.showBackButton(false);
+                }
+            }
         });
 
-        // Triggered in the login modal to close it
-        $scope.closeLogin = function() {
-            $scope.modal.hide();
-        };
+        $rootScope.$broadcast('$stateChangeStart');
 
-        // Open the login modal
-        $scope.login = function() {
-            $scope.modal.show();
-        };
+        $scope.logOut = function () {
+            localStorage.removeItem('userToken');
+            $rootScope.$broadcast('$stateChangeStart');
+        }
 
-        // Perform the login action when the user submits the login form
-        $scope.doLogin = function() {
-            console.log('Doing login', $scope.loginData);
-
-            // Simulate a login delay. Remove this and replace with your login
-            // code if using a login system
-            $timeout(function() {
-                $scope.closeLogin();
-            }, 1000);
-        };
     })
 
-    .controller('HomeController', function($scope) {
+    .controller('LoginController', function($scope, LoginFactory, $ionicSideMenuDelegate, $ionicNavBarDelegate) {
+
+        $scope.loginData = LoginFactory.loginData;
+
+        $scope.doLogin = function() {
+            console.log(LoginFactory.loginData);
+            LoginFactory.login();
+        };
+
+        $scope.$on('$ionicView.leave', function () {
+            $ionicSideMenuDelegate.canDragContent(true);
+            $scope.$root.showMenuIcon = true;
+            $ionicNavBarDelegate.showBackButton(true);
+        });
+    })
+
+    .controller('HomeController', function($scope, RaceFactory) {
+        $scope.races = RaceFactory.races;
+        RaceFactory.getAll();
+
+        $scope.loadMoreRaces = function () {
+            console.log("loadmore");
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            RaceFactory.loadMoreRaces();
+        }
+        $scope.isMoreRaces = function () {
+            return !!RaceFactory.nextRaces();
+        }
+
+    })
+    .controller("ActiveRaceController", function($stateParams, $scope, RaceFactory){
+        var raceId = $stateParams.raceId;
+        $scope.race = RaceFactory.singleRace;
+        RaceFactory.getSingle(raceId);
+
+    })
+    .controller("ParticipateRaceController", function($stateParams, $scope, RaceFactory, $cordovaGeolocation, $ionicPlatform){
+        var raceId = $stateParams.raceId;
+        $scope.race = RaceFactory.singleRace;
+        $scope.participatingTeam = RaceFactory.participatingTeam;
+        $scope.position = {lat:50, lon:50}
+
+
+        RaceFactory.getSingle(raceId);
+        RaceFactory.getParticipatingTeam(raceId)
+
+        $scope.checkLocation = function () {
+            // only for browser development:
+            console.log("Check location")
+            RaceFactory.checkLocation(5.1653826, 51.36193349)
+
+
+            // $ionicPlatform.ready(function () {
+            //     console.log("ready")
+            //     $scope.position = {lat:20, lon:20}
+            //
+            //
+            //
+            //
+            //     $cordovaGeolocation.getCurrentPosition({enableHighAccuracy: false})
+            //         .then(function (position) {
+            //             console.log("test")
+            //             $scope.position = {lat:position.coords.latitude, lon:position.coords.longitude}
+            //             console.log(position.coords.latitude)
+            //             console.log(position.coords.longitude)
+            //
+            //             RaceFactory.checkLocation(position.coords.longitude, position.coords.latitude)
+            //         })
+            // })
+        }
+
 
     })
 
     .controller('RaceController', function($scope, RaceFactory) {
         $scope.races = RaceFactory.races;
-
         RaceFactory.getAll();
+
+        $scope.loadMoreRaces = function () {
+            console.log("loadmore");
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            RaceFactory.loadMoreRaces();
+        }
+        $scope.isMoreRaces = function () {
+            return !!RaceFactory.nextRaces();
+        }
+
     })
 
     .controller("RaceDetailController", function($stateParams, $scope, RaceFactory, $ionicHistory){
         var raceId = $stateParams.raceId;
-        $scope.race = RaceFactory.getSingle(raceId);
+        $scope.race = RaceFactory.singleRace;
+        RaceFactory.getSingle(raceId);
+
         $scope.deleteRace = function(){
             RaceFactory.deleteRace(raceId)
             $ionicHistory.goBack();
         }
-        $scope.$on('refresh', function(event, args) {
-            console.log("refreshed");
-            RaceFactory.getSingle(raceId);
-        })
+        $scope.addTeam = function () {
+            RaceFactory.addTeam();
+        }
 
     })
 
-    .controller('NewRaceController', function($scope, RaceFactory, $ionicHistory) {
+    .controller('NewRaceController', function($scope, RaceFactory, $ionicHistory, PubFactory) {
         $scope.race = RaceFactory.newRace;
+        $scope.formdata = PubFactory.formdata;
+        $scope.searchPubs = PubFactory.searchPubs;
+        $scope.searchPub = function(){
+            if(PubFactory.formdata.searchText){
+                PubFactory.search(RaceFactory.newRace.pubs);
+            }
+            else{
+                PubFactory.searchPubs.length = 0;
+            }
+        }
+        $scope.addPub = function (pub) {
+            console.log(pub);
+            if(RaceFactory.addNewPub(pub)){
+                PubFactory.formdata.searchText = "";
+                PubFactory.searchPubs.length = 0;
+            }
+        }
+        $scope.removePub = function (pub) {
+            RaceFactory.removeNewPub(pub)
+        }
         $scope.addTeamName = function () {
             RaceFactory.addNewTeam();
         }
@@ -78,17 +166,19 @@ angular.module('starter.controllers', [])
             RaceFactory.saveNewRace();
             $ionicHistory.goBack();
         }
+
     })
 
-    .controller("TeamDetailController", function($stateParams, $scope, TeamFactory, $ionicHistory, UserFactory, $rootScope){
+    .controller("TeamDetailController", function($stateParams, $scope, TeamFactory, $ionicHistory, UserFactory){
         var teamId = $stateParams.teamId;
         $scope.team = TeamFactory.team;
+        UserFactory.refreshData();
         $scope.searchUsers = UserFactory.searchUsers;
         $scope.formdata = UserFactory.formdata;
         TeamFactory.getSingle(teamId);
         $scope.deleteTeam = function(){
-            TeamFactory.deleteTeam(teamId)
-            $ionicHistory.goBack();
+            TeamFactory.deleteTeam().then(() => $ionicHistory.goBack())
+
         }
         $scope.searchUser = function(){
             if(UserFactory.formdata.searchText){
@@ -116,6 +206,16 @@ angular.module('starter.controllers', [])
         $scope.deleteTeam = function(){
             TeamFactory.deleteTeam();
             $ionicHistory.goBack();
-            $rootScope.$broadcast('refresh');
         }
     })
+
+    .controller("PubDetailController", function($stateParams, $scope, PubFactory, $ionicHistory){
+        var pubId = $stateParams.pubId;
+        $scope.pub = PubFactory.pub;
+        PubFactory.getSingle(pubId);
+        $scope.deletePub = function(){
+            // TeamFactory.deleteTeam().then(() => $ionicHistory.goBack())
+        }
+
+    })
+

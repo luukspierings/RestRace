@@ -1,5 +1,35 @@
 <ion-view view-title="Home">
   <ion-content>
-    <h2>Active race + latest activity</h2>
+    <ion-list>
+      <a ng-show="race.status === 'notstarted'" ng-repeat="race in races" class="item card" href="#/app/activerace/{{race._id}}">
+
+        <div class="item">
+          <h2>{{race.name}}</h2>
+          <p>{{race.description}}</p>
+          <p>{{race.statusDesc}}</p>
+        </div>
+        <div class="item">
+
+          <h2>Teams ({{race.teams.length}})</h2>
+
+          <div class="list">
+            <div ng-repeat="team in race.teams | orderBy:'-ranking.length'" class="item item-icon-right">
+              <h2>{{team.name}}<span style="margin-left: 30px">Score: {{team.ranking.length}}   </span></h2>
+            </div>
+          </div>
+
+        </div>
+
+      </a>
+    </ion-list>
+
+    <ion-infinite-scroll
+            immediate-check="false"
+            ng-if="isMoreRaces()"
+            on-infinite="loadMoreRaces()"
+            distance="1%">
+    </ion-infinite-scroll>
+
+
   </ion-content>
 </ion-view>

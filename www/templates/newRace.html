@@ -17,17 +17,34 @@
                 <input type="datetime">
             </label>
 
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Kroegen</span>
-                <input type="text" placeholder="Zoek hier naar een kroeg">
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-            </label>
+
+                <div class="item">
+                    <span class="input-label">Kroegen toevoegen</span>
+                    <label class="item-input">
+                        <i class="icon ion-search placeholder-icon"></i>
+                        <input ng-model="formdata.searchText" ng-model-options='{ debounce: 500 }' ng-change="searchPub()" type="text" placeholder="Zoek naar kroegen">
+                    </label>
+                    <div class="list">
+
+                        <div ng-repeat="pub in searchPubs" class="item item-icon-right">
+                            <h2>{{pub.description}}</h2>
+                            <button ng-show="!pub.isAdded" ng-click="addPub(pub)" class="button button-icon icon ion-plus balanced"></button>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="item">
+                <h2 style="margin-bottom: 10px">Kroegen ({{race.pubs.length}})</h2>
+                <div class="list">
+
+                    <div ng-repeat="pub in race.pubs" class="item item-icon-right">
+                        <h2>{{pub.description}}</h2>
+                        <button ng-click="removePub(pub)"  class="button button-icon icon ion-close assertive"></button>
+                    </div>
+
+                </div>
+
+            </div>
 
             <div class="item item-input item-stacked-label">
                 <span class="input-label">Teams</span>
